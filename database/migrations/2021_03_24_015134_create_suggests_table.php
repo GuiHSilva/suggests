@@ -23,7 +23,15 @@ class CreateSuggestsTable extends Migration
                 ->comment('CONTEUDO DA SUGESTAO');
 
             $table->integer('author')
+                ->nullable()
                 ->comment('ID DO AUTOR CASO ESTEJA AUTENTICADO');
+
+            $table->boolean('public')
+                ->comment('SE A SUGESTAO E PUBLICAMENTE VISIVEL');
+
+            $table->boolean('viewed')
+                ->default(false)
+                ->comment('DEFINE SE A SUGESTAO JA FOI ABERTA NO PAINEL');
 
             $table->integer('deleted_by')
                 ->nullable()
