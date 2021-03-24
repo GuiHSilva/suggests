@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Route;
 
 class User extends Authenticatable
 {
@@ -40,4 +41,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function adminlte_image()
+    {
+        $email_hash = md5(trim($this->email));
+        return 'https://www.gravatar.com/avatar/' . $email_hash;
+    }
+
+    public function adminlte_suggests_amount()
+    {
+        return random_int(0, 100);
+    }
+
+    public function adminlte_profile_url()
+    {
+        $route = 'admin/usuario/' . $this->id;
+        return Route::has($route) ? route($route) : '#';
+    }
 }
