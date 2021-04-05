@@ -23,11 +23,15 @@ class SuggestFactory extends Factory
      */
     public function definition()
     {
+
+        $titulo = $this->faker->name;
+
         return [
-            'title'     => $this->faker->name(),
+            'title'     => $titulo,
             'content'   => $this->faker->text(),
             'author'    => random_int(0, 1) == 1 ? User::all()->random()->id : null,
-            'viewed'     => random_int(0, 1) == 1 ? true : false,
+            'viewed'    => random_int(0, 1) == 1 ? true : false,
+            'slug'      => Str::slug($titulo) . '-' . time(),
             'public'    => random_int(0, 1) == 1 ? true : false,
             'deleted_by'=> null
         ];

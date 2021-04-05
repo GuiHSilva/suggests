@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSuggestcategoryTable extends Migration
+class CreateSuggestCategoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateSuggestcategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('suggestcategory', function (Blueprint $table) {
+        Schema::create('suggest_categories', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedInteger('suggest_id');
@@ -41,6 +41,11 @@ class CreateSuggestcategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sugest_categories');
+        Schema::table('suggest_categories', function (Blueprint $table) {
+            $table->dropForeign('suggest_categories_suggest_id_foreign');
+            $table->dropForeign('suggest_categories_category_id_foreign');
+        });
+
+        Schema::dropIfExists('suggest_categories');
     }
 }

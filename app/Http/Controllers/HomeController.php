@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Suggest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -23,6 +15,29 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $suggests = Suggest::where('public', '=', true)
+            ->where('deleted_by', '=', null)
+            ->paginate();
+
+
+
+        return view('landing.home', [
+            'suggests'  => $suggests
+        ]);
     }
+
+    /**
+     * Fazer uma nova sugestao
+     */
+    public function novaSugestao(Request $request){
+
+        return view('landing.new_suggest');
+
+    }
+
+    public function indexAdmin(){
+        return view('vendor.adminlte.home');
+    }
+
 }

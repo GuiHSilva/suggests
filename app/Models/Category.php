@@ -10,7 +10,7 @@ class Category extends Model
     use HasFactory;
 
     public function suggests(){
-        return $this->belongsToMany(Suggest::class, 'sugestcategory', 'suggest_id', 'category_id')
+        return $this->belongsToMany(Suggest::class, 'suggest_categories', 'category_id', 'suggest_id')
             ->withPivot('id')
             ->using(SuggestCategory::class);
     }

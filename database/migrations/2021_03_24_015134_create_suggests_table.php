@@ -26,12 +26,19 @@ class CreateSuggestsTable extends Migration
                 ->nullable()
                 ->comment('ID DO AUTOR CASO ESTEJA AUTENTICADO');
 
+            $table->string('slug')
+                ->comment('SLUG DE ACESSO');
+
             $table->boolean('public')
                 ->comment('SE A SUGESTAO E PUBLICAMENTE VISIVEL');
 
             $table->boolean('viewed')
                 ->default(false)
                 ->comment('DEFINE SE A SUGESTAO JA FOI ABERTA NO PAINEL');
+
+            $table->integer('likes')
+                ->default(0)
+                ->comment('QUANTIDADE DE CURTIDAS');
 
             $table->integer('deleted_by')
                 ->nullable()

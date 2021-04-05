@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Suggest;
 use App\Traits\Toolkit;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
@@ -34,6 +35,8 @@ class AppServiceProvider extends ServiceProvider
         //
         Schema::defaultStringLength(191);
 
+        Paginator::useBootstrap();
+
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
 
             $event->menu->add('Pesquisar');
@@ -53,15 +56,15 @@ class AppServiceProvider extends ServiceProvider
 
             $event->menu->add([
                 'text'        => 'Sugestões',
-                'url'         => 'admin/sugestao',
+                'url'         => Toolkit::route('admin.sugestao'),
                 'icon'        => 'far fa-fw fa-star',
-                'label'       => Toolkit::numberAbbreviation(Suggest::all()->where('viewed', '=', true)->count()),
+                'label'       => Toolkit::numberAbbreviation(Suggest::all()->where('viewed', '=', false)->count()),
                 'label_color' => 'info',
             ]);
 
             $event->menu->add([
                 'text'        => 'Usuários',
-                'url'         => 'admin/usuario',
+                'url'         => Toolkit::route('admin.usuario'),
                 'icon'        => 'far fa-fw fa-user'
             ]);
 
@@ -72,7 +75,7 @@ class AppServiceProvider extends ServiceProvider
 
             $event->menu->add([
                 'text'        => 'Configurar',
-                'url'         => 'admin/configuracoes',
+                'url'         => Toolkit::route('admin.configuracao'),
                 'icon'        => 'fas fa-fw fa-cogs'
             ]);
 

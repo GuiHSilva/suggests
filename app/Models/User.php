@@ -45,8 +45,13 @@ class User extends Authenticatable
 
     public function adminlte_image()
     {
-        $email_hash = md5(trim($this->email));
-        return 'https://www.gravatar.com/avatar/' . $email_hash;
+        return 'https://www.gravatar.com/avatar/' . md5(trim($this->email));
+    }
+
+    public function suggestAmount(){
+
+        return count(Suggest::where('author', $this->id)->get());
+
     }
 
     public function adminlte_suggests_amount()

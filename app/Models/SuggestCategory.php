@@ -9,6 +9,6 @@ class SuggestCategory extends Pivot
 {
     use HasFactory;
 
-    protected $table = 'suggestcategory';
+    protected $table = 'suggest_categories';
 
 }
