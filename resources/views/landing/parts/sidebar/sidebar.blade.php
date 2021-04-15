@@ -13,7 +13,7 @@
         @endguest
 
         @auth
-            href="{{ route('sugestao/nova') }}"
+            href="{{ route('sugestao.nova') }}"
         @endauth
 
         >Dar uma sugestão ⭐</a>

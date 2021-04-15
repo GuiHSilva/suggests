@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SuggestRequest;
 use App\Models\Suggest;
+use App\Models\SuggestCategory;
 use App\Rules\GRecaptchaRule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class SuggestController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -76,30 +79,77 @@ class SuggestController extends Controller
     public function store(Request $request)
     {
 
-        $validate = Validator::make($request->all(), [
+        $request->validate([
             'title' => 'required|min:2|max:191',
             'content' => 'required|min:10',
-            'g-recaptcha-response' => [
-                'required', new GRecaptchaRule
-            ]],
+            // 'g-recaptcha-response' => [
+            //     'required', new GRecaptchaRule
+            // ]
+            ],
             [
-                'title' => 'Informe um título',
-                'content.min' => 'A sugestão é muito curta {{min}}!',
+                'title.required' => 'Informe um título',
+                'title.min' => 'O título é muito curto!',
+                'content.min' => 'A sugestão é muito curta!',
                 'content.required' => 'Uma sugestão precisa ser escrita!',
                 'g-recaptcha-response.required' => 'O captcha falhou!'
             ]);
 
-        if ($validate->fails()) {
-            return back()
-                ->with('error', $validate->errors());
+        DB::beginTransaction();
+
+        $suggest = Suggest::create([
+
+            'title'     => $request->title,
+            'content'   => $request->content,
+            'author'    => (Auth::user() ? Auth::user()->id : null),
+            'slug'      => $this->getSlug($request->title),
+            'public'    => true,
+            'viewed'    => false,
+            'likes'     => random_int(0, 10)
+
+        ]);
+
+        if (!$suggest->save()) {
+
+            DB::rollback();
+
+            return back(500)
+                ->with('erro-save', 'Erro ao salvar!');
         }
 
-        $suggest = Suggest::create($request->all());
+        if ( count($request->categories) > 0 ) {
 
-        $suggest->save();
+            foreach ($request->categories as $i) {
 
-        return response()->json($suggest);
+                $suggest_category = SuggestCategory::create([
+                    'suggest_id' => $suggest->id,
+                    'category_id' => intval($i)
+                ]);
 
+                if (!$suggest_category->save()) DB::rollBack();
+
+            }
+
+        }
+
+        DB::commit();
+
+        return back()
+            ->with('success', 'true')
+            ->with('suggest', $suggest);
+
+    }
+
+    private function getSlug(string $title)
+    {
+        $slug = Str::slug($title);
+
+        $suggest = Suggest::where('slug', $slug)->get();
+
+        if (count($suggest) > 0){
+            $slug = $slug . '-' . (count($suggest) + 1);
+        }
+
+        return $slug;
     }
 
     /**

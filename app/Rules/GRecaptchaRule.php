@@ -7,6 +7,8 @@ use Illuminate\Contracts\Validation\Rule;
 
 class GRecaptchaRule implements Rule
 {
+
+    private $msg = 'A verificação do ReCaptcha falhou!';
     /**
      * Create a new rule instance.
      *
@@ -26,6 +28,12 @@ class GRecaptchaRule implements Rule
      */
     public function passes($attribute, $value)
     {
+
+        if (!isset($value) || $value == '') {
+            $this->msg = 'O captcha nao foi respondido!';
+            return false;
+        }
+
         // Validate ReCaptcha
         $client = new Client([
             'base_uri' => 'https://google.com/recaptcha/api/'
@@ -48,6 +56,6 @@ class GRecaptchaRule implements Rule
      */
     public function message()
     {
-        return 'A verificação do ReCaptcha falhou!';
+        return $this->msg;
     }
 }

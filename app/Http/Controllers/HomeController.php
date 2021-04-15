@@ -18,9 +18,7 @@ class HomeController extends Controller
 
         $suggests = Suggest::where('public', '=', true)
             ->where('deleted_by', '=', null)
-            ->paginate();
-
-
+            ->orderBy('created_at', 'DESC');
 
         return view('landing.home', [
             'suggests'  => $suggests
@@ -32,7 +30,7 @@ class HomeController extends Controller
      */
     public function novaSugestao(Request $request){
 
-        return view('landing.new_suggest');
+        return view('landing.parts.main_content.suggest_new');
 
     }
 

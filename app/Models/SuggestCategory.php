@@ -10,5 +10,8 @@ class SuggestCategory extends Pivot
     use HasFactory;
 
     protected $table = 'suggest_categories';
+    protected $fillable = [
+        'suggest_id', 'category_id'
+    ];
 
 }

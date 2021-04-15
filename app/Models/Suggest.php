@@ -3,14 +3,18 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Session;
 
 class Suggest extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title', 'content', 'author', 'slug', 'public', 'viewed', 'likes'
+    ];
 
     protected $perPage = 5;
 
@@ -49,7 +53,7 @@ class Suggest extends Model
         $diff = date_diff($this->created_at, Carbon::now());
 
         if ($diff->d > 7) {
-            return date('d/m/Y H:i', $this->created_at);
+            return date('d/m/Y H:i', strtotime($this->created_at));
         }
         if ($diff->d < 7 && $diff->d > 0) {
             return $diff->d . ' dia' . ($diff->d > 1 ? 's' : '') . ' atrás';
@@ -61,7 +65,6 @@ class Suggest extends Model
             return $diff->i . ' minuto' . ($diff->i > 1 ? 's' : '') . ' atrás';
         }
         return 'Poucos segundos atrás';
-
 
     }
 

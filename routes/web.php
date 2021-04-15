@@ -24,6 +24,8 @@ Route::get('', [HomeController::class, 'index'])->name('home');
 Route::post('sugestao/{id}/like', [SuggestController::class, 'like'])->name('admin.sugestao.like');
 Route::get('sugestao/nova', [HomeController::class, 'novaSugestao'])->name('sugestao.nova');
 Route::post('sugestao/store', [SuggestController::class, 'store'])->name('sugestao.store');
+Route::get('usuario/{id}', [HomeController::class, 'showUser'])->name('home.usuario');
+Route::get('sugestao/{slug}', [SuggestController::class, 'showSuggest'])->name('sugestao.show');
 
 Auth::routes();
 
