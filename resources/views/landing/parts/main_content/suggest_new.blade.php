@@ -59,35 +59,43 @@
                                 </div>
                             @endif
 
-                            <div class="form-group">
-                                <label for="title">Título da sua sugestão</label>
-                                <input type="text" id="title" name="title"
-                                    class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}"
-                                    aria-describedby="helpId"
-                                    required
-                                    value="{{ old('title') }}">
-                                @if($errors->has('title'))
-                                    <div class="invalid-feedback">
-                                        <strong>{{ $errors->first('title') }}</strong>
+                            <div class="row">
+
+                                <div class="col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="title">Título da sua sugestão</label>
+                                        <input type="text" id="title" name="title"
+                                            class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}"
+                                            aria-describedby="helpId"
+                                            required
+                                            value="{{ old('title') }}">
+                                        @if($errors->has('title'))
+                                            <div class="invalid-feedback">
+                                                <strong>{{ $errors->first('title') }}</strong>
+                                            </div>
+                                        @else
+                                            <small class="text-muted">Dê um título significativo para a sua sugestão.</small>
+                                        @endif
                                     </div>
-                                @else
-                                    <small class="text-muted">Dê um título significativo para a sua sugestão.</small>
-                                @endif
-                            </div>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="category">Categorias da sugestão</label>
+                                <div class="col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label for="category">Categorias da sugestão</label>
 
-                                <select class="form-control" id="categories" name="categories[]" multiple="multiple">
-                                    @if (is_array(old('categories')))
-                                        @foreach (old('categories') as $tag)
-                                            <option value="{{ $tag }}" selected="selected">
-                                                {{ App\Models\Category::where('id', $tag)->value('name') }}
-                                            </option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <small id="helpId" class="text-muted">Escolha <strong>até 3 categorias</strong> que estejam relacionadas a sua sugestão.</small>
+                                        <select class="form-control" id="categories" name="categories[]" multiple="multiple">
+                                            @if (is_array(old('categories')))
+                                                @foreach (old('categories') as $tag)
+                                                    <option value="{{ $tag }}" selected="selected">
+                                                        {{ App\Models\Category::where('id', $tag)->value('name') }}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                        <small id="helpId" class="text-muted">Escolha <strong>até 3 categorias</strong> que estejam relacionadas a sua sugestão.</small>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="form-group">
@@ -102,6 +110,12 @@
                                 @else
                                     <small class="text-muted">Expresse tudo que passa pela sua cabeça.</small>
                                 @endif
+                            </div>
+
+                            <div class="form-check form-check-inline mb-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="public" id="public" value="on" @if(old('public')=='on') checked @endif> Sugestao privada? (ela não aparecerá publicamente nem poderá receber curtidas)
+                                </label>
                             </div>
 
                             @if(env('GOOGLE_RECAPTCHA_KEY'))
@@ -128,7 +142,7 @@
 
                                 @guest
                                 <div class="text-danger ml-sm-1 ml-md-4 ml-lg-4">
-                                    <strong>AVISO: </strong>Você está enviando uma sugestão anônima!
+                                    <strong>AVISO: </strong>Você está enviando uma sugestão anônima. <a href="{{ route('register') }}">Registre-se</a> para torna-la identificada!
                                 </div>
                                 @endguest
 

@@ -20,60 +20,36 @@
     </div>
 </div>
 
-
-
 <div class="card my-4">
     <h5 class="card-header">Procurar</h5>
     <div class="card-body">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Procurar por...">
-            <span class="input-group-append">
-                <button class="btn btn-secondary" type="button"><i class="fas fa-search"></i></button>
-            </span>
-        </div>
-        <small>Procure por sugestões, use palavras chaves presentes no conteúdo da sugestão
-        </small>
+        <form action="{{ route('search') }}" method="get">
+            <div class="input-group">
+                <input type="text" class="form-control {{ $errors->has('q') ? 'is-invalid' : '' }}"
+                    value="{{ old('q') }}" name="q" placeholder="Procurar por...">
+                <span class="input-group-append">
+                    <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button>
+                </span>
+            </div>
+            @if ($errors->has('q'))
+
+                <div class="text-danger">
+                    {{ $errors->first('q') }}
+                </div>
+
+            @else
+            <small>Procure por sugestões, use palavras chaves presentes no conteúdo e título da sugestão
+            </small>
+            @endif
+        </form>
     </div>
 </div>
-
-
 
 <!-- Categories Widget -->
-<div class="card my-4">
-    <h5 class="card-header">Categorias</h5>
-    <div class="card-body">
-        <a href="#!">Teste</a>
-        <a href="#!">Teste</a>
-        <a href="#!">Teste</a>
-        <a href="#!">Teste</a>
-    </div>
-    <div class="card-footer">
-        <a class="btn btn-sm btn-primary" href="#" role="button">Ver todos</a>
-    </div>
-</div>
-
-
+<x-categories-widget/>
 
 <!-- Side Widget -->
-<div class="card my-4">
-    <h5 class="card-header">Estatísticas</h5>
-    <div class="card-body">
-
-        <p class="mb-0">
-            São <strong>x</strong> sugestões enviadas.
-        </p>
-        <p class="mb-0">
-            Sendo <strong>x</strong> com identificaçao.
-        </p>
-        <p class="mb-0">
-            Há <strong>x</strong> categorias disponíveis.
-        </p>
-        <p class="mb-0">
-            Existem <strong>x</strong> usuários cadastrados.
-        </p>
-
-    </div>
-</div>
+<x-suggest-info-widget/>
 
 @section('modals')
     @include('landing.parts.modal.suggest_type')

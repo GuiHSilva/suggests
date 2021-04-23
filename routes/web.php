@@ -25,7 +25,10 @@ Route::post('sugestao/{id}/like', [SuggestController::class, 'like'])->name('adm
 Route::get('sugestao/nova', [HomeController::class, 'novaSugestao'])->name('sugestao.nova');
 Route::post('sugestao/store', [SuggestController::class, 'store'])->name('sugestao.store');
 Route::get('usuario/{id}', [HomeController::class, 'showUser'])->name('home.usuario');
-Route::get('sugestao/{slug}', [SuggestController::class, 'showSuggest'])->name('sugestao.show');
+Route::get('sugestao/{slug}', [HomeController::class, 'showSuggest'])->name('sugestao.show');
+Route::get('categoria/{category}', [HomeController::class, 'showCategory'])->name('home.categoria.show');
+Route::get('categoria', [HomeController::class, 'showCategories'])->name('home.categoria');
+Route::get('search', [HomeController::class, 'search'])->name('search');
 
 Auth::routes();
 

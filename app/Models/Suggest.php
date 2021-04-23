@@ -28,9 +28,17 @@ class Suggest extends Model
             ->using(SuggestCategory::class);
     }
 
+    public function likeButton()
+    {
+        return '<a href="#!" class="btn btn-sm ' . $this->liked() . ' like-sugestao" sugestao="{{ $s->id }}"
+                    data-toggle="tooltip" data-placement="top" title="Clique para curtir">
+                    <i class="fas fa-heart"></i>
+                </a>';
+    }
+
     public function liked(){
         $likes = Cookie::get('likes');
-        if (isset($likes) &&  in_array($this->id, $likes)){
+        if (isset($likes) && in_array($this->id, $likes)){
             return 'btn-danger';
         }
         return 'btn-outline-danger';
@@ -39,7 +47,7 @@ class Suggest extends Model
     public function getCategoriesWithCommas(){
         $output = array();
         foreach($this->categories as $term){
-            $output[] = $term->name;
+            $output[] = '<a href=' . route('home.categoria.show', $term->id) . '>' . $term->name . '</a>';
         }
 
         if (count($output) == 0){

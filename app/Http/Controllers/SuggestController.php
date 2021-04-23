@@ -80,15 +80,16 @@ class SuggestController extends Controller
     {
 
         $request->validate([
-            'title' => 'required|min:2|max:191',
+            'title' => 'required|min:2|max:40',
             'content' => 'required|min:10',
-            // 'g-recaptcha-response' => [
-            //     'required', new GRecaptchaRule
-            // ]
+            'g-recaptcha-response' => [
+                'required', new GRecaptchaRule
+            ]
             ],
             [
                 'title.required' => 'Informe um título',
                 'title.min' => 'O título é muito curto!',
+                'title.max' => 'O título é muito longo!',
                 'content.min' => 'A sugestão é muito curta!',
                 'content.required' => 'Uma sugestão precisa ser escrita!',
                 'g-recaptcha-response.required' => 'O captcha falhou!'
@@ -102,9 +103,7 @@ class SuggestController extends Controller
             'content'   => $request->content,
             'author'    => (Auth::user() ? Auth::user()->id : null),
             'slug'      => $this->getSlug($request->title),
-            'public'    => true,
-            'viewed'    => false,
-            'likes'     => random_int(0, 10)
+            'public'    => $request->public && $request->public == 'on' ? false : true
 
         ]);
 
@@ -116,7 +115,7 @@ class SuggestController extends Controller
                 ->with('erro-save', 'Erro ao salvar!');
         }
 
-        if ( count($request->categories) > 0 ) {
+        if ( isset($request->categories) && count($request->categories) > 0 ) {
 
             foreach ($request->categories as $i) {
 
@@ -160,7 +159,9 @@ class SuggestController extends Controller
      */
     public function show(int $id)
     {
-        $suggest = Suggest::with('user')->where('id', $id)->first();
+        $suggest = Suggest::with('user')
+            ->where('id', $id)
+            ->first();
 
         if (!$suggest) {
             return view('admin/error/404');
