@@ -7,6 +7,7 @@ use App\Traits\Toolkit;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 
@@ -32,7 +33,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Dispatcher $events)
     {
-        //
+
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
 
         setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
         date_default_timezone_set('America/Sao_Paulo');
