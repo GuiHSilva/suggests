@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
+    public function index(Request $request)
+    {
+
+
+        return view('admin.category.index');
+    }
+
     public function select2(Request $request){
 
         $categories = Category::select("*")

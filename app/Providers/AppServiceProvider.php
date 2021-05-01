@@ -79,7 +79,13 @@ class AppServiceProvider extends ServiceProvider
 
 
 
-            $event->menu->add('Configuraçoes');
+            $event->menu->add('Configurações');
+
+            $event->menu->add([
+                'text'        => 'Categorias',
+                'url'         => Toolkit::route('admin.categoria.index'),
+                'icon'        => 'fas fa-fw fa-tags'
+            ]);
 
             $event->menu->add([
                 'text'        => 'Configurar',

@@ -17,17 +17,24 @@
                     </li>
                 @endguest
                 @auth
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home.usuario', Auth::user()->id) }}">{{ Auth::user()->name }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="post">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-danger">
-                                <i class="fas fa-door-open"></i>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{{ route('home.usuario', Auth::user()->id) }}" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name }}</a>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            <a class="dropdown-item" href="{{ route('home.usuario', Auth::user()->id) }}">
+                                <i class="fas fa-user"></i>
+                                Minha conta
+                            </a>
+                            <a class="dropdown-item" href="{{ route('admin') }}">
+                                <i class="fas fa-cog"></i>
+                                Painel administrador
+                            </a>
+                            <a class="dropdown-item text-danger" href="{{ route('logout') }}">
+                                <i class="fas fa-door-open    "></i>
                                 Sair
-                            </button>
-                        </form>
+                            </a>
+                        </div>
+
                     </li>
                 @endauth
             </ul>

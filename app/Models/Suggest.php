@@ -16,7 +16,7 @@ class Suggest extends Model
         'title', 'content', 'author', 'slug', 'public', 'viewed', 'likes'
     ];
 
-    protected $perPage = 5;
+    protected $perPage = 6;
 
     public function user(){
         return $this->belongsTo(User::class, 'author');
@@ -34,6 +34,12 @@ class Suggest extends Model
                     data-toggle="tooltip" data-placement="top" title="Clique para curtir">
                     <i class="fas fa-heart"></i>
                 </a>';
+    }
+
+    public function authorName()
+    {
+        $author = $this->user;
+        return $author ? $author->name : 'Anônimo';
     }
 
     public function liked(){
@@ -74,6 +80,11 @@ class Suggest extends Model
         }
         return 'Poucos segundos atrás';
 
+    }
+
+    public function getContentWithoutHtml()
+    {
+        return strip_tags($this->content);
     }
 
     public function getResumedContent($quantidade = 80) {

@@ -26,16 +26,17 @@
         </div>
     </div>
 </div>
+
 @foreach ($suggests as $suggest)
 
 <div class="card mt-2 ml-3 mr-3 mb-0 {{ $suggest->getCardCssNotViewd() }}">
 
     <div class="card-header">
-        <div class="row d-flex justify-content-between text-danger">
+        <div class="row d-flex justify-content-between">
             <div>
-                <span class="text-muted">{{ $suggest->title }}
+                <a href="{{ route('admin.sugestao.show', $suggest->id) }}">{{ $suggest->title }}</a>
             </div>
-            <div class="justify-content-end">
+            <div class="text-danger">
 
                 @if (!$suggest->public)
                     <span data-toggle="tooltip" data-placement="top" title="Essa sugestão não é pública para receber curtidas!" class="badge badge-warning">PRIVADO</span>
@@ -50,16 +51,19 @@
     </div>
 
     <div class="card-body" href="{{ 'sugestao/' . $suggest->id }}">
-        <p class="card-text">{{ $suggest->content }}</p>
+        {{ $suggest->getContentWithoutHtml() }}
+        <div class="text-muted mb-0">
+            Autor {{ $suggest->authorName() }} enviado em {{ date('d/m/Y h:i', strtotime($suggest->created_at)) }}
+        </div>
     </div>
 
     <div class="card-footer">
 
         <!-- FOOTER DO CARD -->
-        <div class="justify-content-between d-flex align-items-center">
+        <div class="d-flex justify-content-between align-items-center">
 
             <!-- CATEGORIAS NO FOOTER -->
-            <div class="justify-content-start">
+            <div class="text-muted">
 
                 @if (count($suggest->categories) > 0)
                     <span>
@@ -68,7 +72,7 @@
                     @endforeach
                     </span>
                 @else
-                    <p>Nenhuma categoria associada!</p>
+                    Nenhuma categoria associada
                 @endif
 
             </div>
@@ -77,7 +81,7 @@
             <div class="botoes-acao d-flex justify-content-end">
 
                 <div>
-                    <a type="button" class="btn btn-sm btn-primary ml-2" title="Abrir" href="sugestao/{{ $suggest->id }}">
+                    <a type="button" class="btn btn-sm btn-primary ml-2" title="Abrir" href="{{ route('admin.sugestao.show', $suggest->id) }}">
                         <i class="fas fa-external-link-alt"></i>
                     </a>
                 </div>

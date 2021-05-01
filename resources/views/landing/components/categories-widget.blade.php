@@ -2,7 +2,7 @@
     <h5 class="card-header">Categorias</h5>
     <div class="card-body">
         @foreach ($categories as $cat)
-        <a href="{{ route('home.categoria.show', $cat->id) }}">{{ $cat->name }}</a>
+            <a href="{{ route('home.categoria.show', $cat->id) }}">{{ $cat->name }}</a>
         @endforeach
     </div>
     <div class="card-footer">

@@ -44,17 +44,18 @@ Route::group(
     Route::post('pesquisa', [SuggestController::class, 'index'])->name('admin.pesquisa');
 
     // SUGESTOES
-    Route::get('sugestao', [SuggestController::class, 'index'])->name('admin.sugestao');
-    Route::get('sugestao/pagination', [SuggestController::class, 'suggestPagination']);
-    Route::get('sugestao/{id}/mark-read', [SuggestController::class, 'suggestMarkread']);
-    Route::get('sugestao/{id}', [SuggestController::class, 'show']);
+    Route::get('sugestao',                  [SuggestController::class, 'index'])->name('admin.sugestao');
+    Route::get('sugestao/pagination',       [SuggestController::class, 'suggestPagination']);
+    Route::get('sugestao/{id}',             [SuggestController::class, 'show'])->name('admin.sugestao.show');
+    Route::get('sugestao/{id}/mark-read',   [SuggestController::class, 'suggestMarkread']);
 
     // CATEGORIA
-    Route::get('categoria/{id}', [CategoryController::class, 'show'])->name('admin.categoria');
+    Route::get('categoria',         [CategoryController::class, 'index'])->name('admin.categoria.index');
+    Route::get('categoria/{id}',    [CategoryController::class, 'show'])->name('admin.categoria.show');
 
     // USUARIOS
-    Route::get('usuario', [UserController::class, 'index'])->name('admin.usuario');
-    Route::get('usuario/{id}', [UserController::class, 'show'])->name('admin.usuario.show');
+    Route::get('usuario',       [UserController::class, 'index'])->name('admin.usuario');
+    Route::get('usuario/{id}',  [UserController::class, 'show'])->name('admin.usuario.show');
 
     // CONFIGURACOES
     Route::get('configuracao', function() {

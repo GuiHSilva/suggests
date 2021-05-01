@@ -62,11 +62,20 @@ class HomeController extends Controller
     public function showCategory( Category $category, Request $request)
     {
 
-        $suggests = Suggest::where(function ($q) {
-            SuggestCategory::where($suggest->id); // parei aqui
-        })->get();
+        // TO-DO: um query mais inteligente para filtrar a busca, para passar pelo URL
 
-        return view('landing.parts.main_content.category', compact('category', 'suggests'));
+        $order_by_column    = $request->attr ?? 'created_at';
+        $order_by_direction = $request->direction ?? 'DESC';
+
+        $suggests = $category->suggests()
+            ->orderBy($order_by_column, $order_by_direction)
+            ->paginate()
+            ->appends( request()->query() );
+
+        return view('landing.parts.main_content.category', [
+            'category'  => $category,
+            'suggests'  => $suggests
+        ]);
 
     }
 
